@@ -503,21 +503,6 @@ function updateView(){
   xCircle.setAttribute('pointer-events',lockMode?'none':'all');
 }
 
-function popTri(id){
-  const t=triangles[id];
-  const poly=triEls[id].querySelector('polygon');
-  const txt=triEls[id].querySelector('text');
-  // Animate stroke width on polygon
-  const origStroke='1.8';
-  const origSize='28';
-  poly.setAttribute('stroke-width','4.5');
-  txt.setAttribute('font-size','38');
-  setTimeout(()=>{
-    poly.setAttribute('stroke-width','1.8');
-    txt.setAttribute('font-size','28');
-  },200);
-}
-
 async function onTriClick(id){
   if(document.getElementById('wild-modal-wrap').classList.contains('show'))return;
   if(lockMode){
@@ -545,7 +530,7 @@ async function onTriClick(id){
   } else {
     vibrate(18);
   }
-  selected.push(id);setMsg('');popTri(id);updateView();
+  selected.push(id);setMsg('');updateView();
 }
 
 function doClear(){
