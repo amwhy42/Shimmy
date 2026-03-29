@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shimmy</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Shimmy Legacy</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -12,14 +11,13 @@ body{font-family:'DM Mono',monospace;background:#e8e6df;min-height:100vh;display
 #game{padding:.6rem .5rem;max-width:400px;width:100%;margin:0 auto;}
 #splash{position:fixed;top:0;left:0;right:0;bottom:0;background:#e8e6df;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;}
 #splash.gone{display:none;}
-#splash-tri-wrap{position:relative;width:180px;height:180px;margin-bottom:2rem;}
-#splash-title{font-family:'Bebas Neue',sans-serif;font-size:64px;letter-spacing:.12em;color:#2C2C2A;line-height:1;margin-bottom:.3rem;}
-#splash-sub{font-family:'DM Mono',monospace;font-size:12px;color:#888;letter-spacing:.1em;margin-bottom:2.5rem;}
-#splash-tap{font-family:'DM Mono',monospace;font-size:11px;color:#aaa;letter-spacing:.08em;animation:pulse 1.8s ease-in-out infinite;}
+#splash-logo{margin-bottom:1.5rem;}
+#splash-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:.18em;color:#2C2C2A;text-align:center;line-height:1.15;}
+#splash-sub{font-family:'DM Mono',monospace;font-size:11px;color:#888;letter-spacing:.12em;margin-top:.5rem;margin-bottom:2.5rem;text-align:center;}
+#splash-tap{font-family:'DM Mono',monospace;font-size:11px;color:#aaa;animation:pulse 1.8s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
-.sp-tri{position:absolute;width:0;height:0;opacity:0;animation:triPop .4s ease-out forwards;}
-@keyframes triPop{to{opacity:1;transform:scale(1);}from{opacity:0;transform:scale(0.3);}}
-#scorebar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:.4rem;}
+#scorebar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin-bottom:.4rem;}
+.sb-timer{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#0F6E56;}
 .sb-card{background:#f4f2eb;border-radius:8px;border:.5px solid #ccc;padding:.35rem .65rem;}
 .sb-label{font-size:9px;color:#888;letter-spacing:.08em;margin-bottom:1px;}
 .sb-value{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#E24B4A;}
@@ -27,62 +25,10 @@ body{font-family:'DM Mono',monospace;background:#e8e6df;min-height:100vh;display
 .sb-next{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#854F0B;}
 #settings-bar{display:flex;justify-content:flex-end;gap:6px;margin-bottom:.4rem;}
 #btn-howtoplay,#btn-settings{padding:5px 12px;border-radius:6px;border:.5px solid #ccc;background:#f4f2eb;color:#555;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;}
-#btn-howtoplay:hover,#btn-settings:hover{background:#e8e6df;}
-#settings-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;}
-#settings-popup.show{display:flex;}
-#settings-inner{background:#fff;border-radius:12px;padding:1.4rem 1.2rem;max-width:300px;width:88%;}
-#settings-inner h2{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#2C2C2A;margin-bottom:1rem;letter-spacing:.05em;}
-.settings-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:.5px solid #eee;}
-.settings-row:last-of-type{border-bottom:none;}
-.settings-label{font-family:'DM Mono',monospace;font-size:12px;color:#444;}
-.settings-sublabel{font-family:'DM Mono',monospace;font-size:10px;color:#aaa;margin-top:2px;}
-/* Toggle switch */
-.toggle-wrap{position:relative;width:44px;height:26px;flex-shrink:0;}
-.toggle-wrap input{opacity:0;width:0;height:0;position:absolute;}
-.toggle-slider{position:absolute;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:26px;cursor:pointer;transition:.25s;}
-.toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;}
-.toggle-wrap input:checked+.toggle-slider{background:#0F6E56;}
-.toggle-wrap input:checked+.toggle-slider:before{transform:translateX(18px);}
-#settings-close{display:block;width:100%;margin-top:1rem;padding:9px;border-radius:8px;border:none;background:#2C2C2A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.06em;cursor:pointer;}
-#howto-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;}
-#howto-popup.show{display:flex;}
-#howto-inner{background:#fff;border-radius:12px;padding:1.4rem 1.2rem;max-width:340px;width:90%;max-height:88vh;overflow-y:auto;}
-#howto-inner h2{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#2C2C2A;margin-bottom:.8rem;letter-spacing:.05em;}
-#howto-inner h3{font-family:'Bebas Neue',sans-serif;font-size:15px;color:#185FA5;margin:.9rem 0 .3rem;letter-spacing:.04em;}
-#howto-inner p{font-size:12px;color:#444;line-height:1.6;margin-bottom:.4rem;}
-#howto-inner ul{font-size:12px;color:#444;line-height:1.7;padding-left:1.2rem;margin-bottom:.4rem;}
-#howto-inner li{margin-bottom:.2rem;}
-.howto-chip{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px;font-family:'Bebas Neue',sans-serif;}
-.chip-green{background:#E1F5EE;color:#0F6E56;}
-.chip-blue{background:#E6F1FB;color:#185FA5;}
-.chip-amber{background:#FAEEDA;color:#854F0B;}
-.chip-pink{background:#FBEAF0;color:#993556;}
-#howto-close{display:block;width:100%;margin-top:1rem;padding:9px;border-radius:8px;border:none;background:#2C2C2A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.06em;cursor:pointer;}
 #lock-banner{display:none;background:#E6F1FB;border:1.5px solid #185FA5;border-radius:8px;padding:.35rem .65rem;margin-bottom:.4rem;font-size:11px;color:#0C447C;text-align:center;}
 #lock-banner.show{display:block;}
-#grid-wrap{width:100%;margin-bottom:0;}
+#grid-wrap{width:100%;}
 #svg-grid{display:block;width:100%;touch-action:none;user-select:none;}
-.tri{cursor:pointer;}
-.tri polygon{stroke:#444;stroke-width:1.8;fill:#F1EFE8;transition:fill .15s;}
-.tri.selected polygon{fill:#B5D4F4;stroke:#185FA5;stroke-width:2.5;}
-.tri.inpath polygon{fill:#9FE1CB;stroke:#0F6E56;stroke-width:2.5;}
-.tri.reachable polygon{fill:#E4E4DC;stroke:#999;}
-.tri.locked polygon{fill:#FAEEDA;stroke:#BA7517;}
-.tri.locked.selected polygon{fill:#B5D4F4;stroke:#185FA5;stroke-width:2.5;}
-.tri.locked.inpath polygon{fill:#9FE1CB;stroke:#0F6E56;stroke-width:2.5;}
-.tri.lockmode polygon{stroke:#185FA5;stroke-width:2;stroke-dasharray:5 3;}
-.tri text{font-family:'Bebas Neue',sans-serif;fill:#2C2C2A;pointer-events:none;text-anchor:middle;dominant-baseline:central;}
-.tri.selected text,.tri.inpath text{fill:#0C447C;}
-.tri.locked text{fill:#854F0B;}
-.tri.wild polygon{fill:#FBEAF0;}
-.tri.wild text{fill:#993556;}
-.tri.wild.selected polygon,.tri.wild.inpath polygon{fill:#B5D4F4;}
-.tri.wild.selected text,.tri.wild.inpath text{fill:#0C447C;}
-.tri.wild-blocked polygon{fill:#e8e8e8;stroke:#ccc;}
-.tri.wild-blocked text{fill:#bbb;}
-.tri.lock-unavailable polygon{fill:#e8e8e8;stroke:#ccc;}
-.tri.lock-unavailable text{fill:#bbb;}
-
 #msg{font-size:10px;color:#888;min-height:14px;margin-top:.2rem;text-align:center;}
 #msg.good{color:#0F6E56;}#msg.bad{color:#E24B4A;}#msg.info{color:#185FA5;}
 #words-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;}
@@ -102,608 +48,988 @@ body{font-family:'DM Mono',monospace;background:#e8e6df;min-height:100vh;display
 #wild-title{font-size:11px;color:#888;margin-bottom:.5rem;text-align:center;}
 #wild-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;}
 .wl-btn{padding:5px 0;border-radius:4px;border:.5px solid #ccc;background:#F1EFE8;color:#2C2C2A;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer;text-align:center;}
-.wl-btn:hover{background:#B5D4F4;color:#0C447C;}
 #wild-cancel{margin-top:.4rem;width:100%;padding:6px;border-radius:6px;border:.5px solid #ccc;background:#F1EFE8;color:#888;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;}
+#settings-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;}
+#settings-popup.show{display:flex;}
+#settings-inner{background:#fff;border-radius:12px;padding:1.4rem 1.2rem;max-width:300px;width:88%;}
+#settings-inner h2{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#2C2C2A;margin-bottom:1rem;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:.5px solid #eee;}
+.settings-label{font-family:'DM Mono',monospace;font-size:12px;color:#444;}
+.settings-sublabel{font-family:'DM Mono',monospace;font-size:10px;color:#aaa;margin-top:2px;}
+.toggle-wrap{position:relative;width:44px;height:26px;flex-shrink:0;}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-slider{position:absolute;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:26px;cursor:pointer;transition:.25s;}
+.toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;}
+.toggle-wrap input:checked+.toggle-slider{background:#0F6E56;}
+.toggle-wrap input:checked+.toggle-slider:before{transform:translateX(18px);}
+#settings-close{display:block;width:100%;margin-top:1rem;padding:9px;border-radius:8px;border:none;background:#2C2C2A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;}
+#howto-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;}
+#howto-popup.show{display:flex;}
+#howto-inner{background:#fff;border-radius:12px;padding:1.4rem 1.2rem;max-width:340px;width:90%;max-height:88vh;overflow-y:auto;}
+#howto-inner h2{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#2C2C2A;margin-bottom:.8rem;}
+#howto-inner h3{font-family:'Bebas Neue',sans-serif;font-size:15px;color:#185FA5;margin:.9rem 0 .3rem;}
+#howto-inner p,#howto-inner li{font-size:12px;color:#444;line-height:1.6;}
+#howto-inner ul{padding-left:1.2rem;margin-bottom:.4rem;}
+#howto-close{display:block;width:100%;margin-top:1rem;padding:9px;border-radius:8px;border:none;background:#2C2C2A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;}
+#timelog-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center;}
+#timelog-popup.show{display:flex;}
+#timelog-inner{background:#fff;border-radius:12px;padding:1.4rem 1.2rem;max-width:300px;width:88%;max-height:80vh;overflow-y:auto;}
+#timelog-inner h2{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#2C2C2A;margin-bottom:.2rem;}
+#timelog-subtitle{font-size:10px;color:#aaa;letter-spacing:.06em;margin-bottom:1rem;}
+#timelog-list{list-style:none;padding:0;margin:0;}
+#timelog-list li{display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:.5px solid #eee;}
+#timelog-list li:last-child{border-bottom:none;}
+.tl-level{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#185FA5;min-width:70px;}
+.tl-time{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#0F6E56;text-align:right;}
+.tl-empty{font-size:12px;color:#aaa;text-align:center;padding:1rem 0;}
+#timelog-close{display:block;width:100%;margin-top:1rem;padding:9px;border-radius:8px;border:none;background:#2C2C2A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;}
+#complete-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:400;align-items:center;justify-content:center;}
+#complete-popup.show{display:flex;}
+#complete-inner{background:#fff;border-radius:16px;padding:1.6rem 1.3rem;max-width:320px;width:90%;max-height:88vh;overflow-y:auto;text-align:center;}
+#complete-congrats{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#0F6E56;letter-spacing:.08em;margin-bottom:.2rem;}
+#complete-sub{font-family:'DM Mono',monospace;font-size:11px;color:#888;letter-spacing:.06em;margin-bottom:.3rem;}
+#complete-totaltime{font-family:'Bebas Neue',sans-serif;font-size:42px;color:#E24B4A;margin-bottom:1.1rem;}
+#complete-log-title{font-size:9px;color:#aaa;letter-spacing:.08em;margin-bottom:.5rem;text-align:left;}
+#complete-log-list{list-style:none;padding:0;margin:0 0 1rem 0;text-align:left;}
+#complete-log-list li{display:flex;align-items:center;justify-content:space-between;padding:.35rem 0;border-bottom:.5px solid #eee;}
+#complete-log-list li:last-child{border-bottom:none;}
+#complete-close{display:block;width:100%;padding:9px;border-radius:8px;border:none;background:#2C2C2A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;}
+
+/* ── Auth / Highscore Popup ─────────────────────────────── */
+#auth-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center;}
+#auth-popup.show{display:flex;}
+#auth-inner{background:#fff;border-radius:16px;padding:1.6rem 1.4rem;max-width:320px;width:90%;max-height:90vh;overflow-y:auto;}
+#auth-inner h2{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#2C2C2A;margin-bottom:.2rem;}
+#auth-sub{font-size:10px;color:#aaa;letter-spacing:.07em;margin-bottom:1.1rem;}
+.auth-field{display:flex;flex-direction:column;gap:4px;margin-bottom:.75rem;}
+.auth-field label{font-size:10px;color:#888;letter-spacing:.07em;}
+.auth-field input{padding:8px 10px;border-radius:7px;border:1px solid #ccc;font-family:'DM Mono',monospace;font-size:13px;color:#2C2C2A;outline:none;}
+.auth-field input:focus{border-color:#185FA5;}
+#auth-err{font-size:11px;color:#E24B4A;min-height:16px;margin-bottom:.4rem;}
+#auth-submit{display:block;width:100%;padding:10px;border-radius:8px;border:none;background:#0F6E56;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;cursor:pointer;margin-bottom:.6rem;}
+#auth-submit:disabled{background:#9EC8B9;cursor:default;}
+#auth-toggle{font-size:11px;color:#185FA5;text-align:center;cursor:pointer;text-decoration:underline;}
+#auth-guest{font-size:10px;color:#aaa;text-align:center;cursor:pointer;margin-top:.4rem;text-decoration:underline;}
+
+/* Highscore table popup */
+#hs-popup{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center;}
+#hs-popup.show{display:flex;}
+#hs-inner{background:#fff;border-radius:16px;padding:1.4rem 1.2rem;max-width:340px;width:90%;max-height:88vh;overflow-y:auto;}
+#hs-inner h2{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#2C2C2A;margin-bottom:.15rem;}
+#hs-subtitle{font-size:10px;color:#aaa;letter-spacing:.07em;margin-bottom:.9rem;}
+#hs-user-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;padding:.4rem .6rem;background:#F1EFE8;border-radius:8px;}
+#hs-user-name{font-family:'Bebas Neue',sans-serif;font-size:16px;color:#185FA5;}
+#hs-logout{font-size:10px;color:#aaa;cursor:pointer;text-decoration:underline;}
+#hs-table{width:100%;border-collapse:collapse;margin-bottom:.7rem;}
+#hs-table thead tr th{font-size:9px;color:#888;letter-spacing:.07em;text-align:left;padding:0 4px 6px;}
+#hs-table thead tr th:last-child{text-align:right;}
+#hs-table tbody tr{border-bottom:.5px solid #eee;}
+#hs-table tbody tr:last-child{border-bottom:none;}
+#hs-table tbody tr.hs-me td{background:#E6F1FB;}
+#hs-table tbody tr td{font-size:13px;padding:6px 4px;color:#2C2C2A;font-family:'DM Mono',monospace;}
+#hs-table tbody tr td:first-child{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#aaa;width:28px;}
+#hs-table tbody tr td.hs-name{font-family:'Bebas Neue',sans-serif;font-size:16px;color:#2C2C2A;}
+#hs-table tbody tr td.hs-time{font-family:'Bebas Neue',sans-serif;font-size:16px;color:#E24B4A;text-align:right;}
+#hs-empty{font-size:12px;color:#aaa;text-align:center;padding:1rem 0;}
+.hs-medal{color:#E6B800;}
+#hs-close{display:block;width:100%;padding:9px;border-radius:8px;border:none;background:#2C2C2A;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;margin-top:.4rem;}
+#hs-loading{font-size:12px;color:#888;text-align:center;padding:1rem 0;}
+
+/* Score submit banner in completion popup */
+#complete-hs-row{margin-top:.8rem;padding:.6rem;background:#E1F5EE;border-radius:8px;border:1px solid #0F6E56;}
+#complete-hs-msg{font-size:12px;color:#0F6E56;margin-bottom:.5rem;text-align:center;}
+#complete-hs-btn{display:block;width:100%;padding:8px;border-radius:7px;border:none;background:#0F6E56;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;cursor:pointer;}
+#complete-hs-btn.submitted{background:#9EC8B9;cursor:default;}
 </style>
 </head>
 <body>
-
-<div id="splash" onclick="dismissSplash()">
-  <svg width="200" height="160" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:1.5rem;">
-    <!-- A mini parallelogram of triangles, animated in -->
-    <!-- Row 0: 4 up+down triangles -->
-    <polygon points="10,80 50,10 90,80"  fill="#E1F5EE" stroke="#0F6E56" stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .1s forwards;"/>
-    <polygon points="90,80 50,10 130,10" fill="#F1EFE8" stroke="#444"    stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .2s forwards;"/>
-    <polygon points="90,80 130,10 170,80" fill="#E6F1FB" stroke="#185FA5" stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .3s forwards;"/>
-    <polygon points="170,80 130,10 190,10" fill="#F1EFE8" stroke="#444"   stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .4s forwards;"/>
-    <!-- Row 1: middle row -->
-    <polygon points="30,150 10,80 90,80"  fill="#FBEAF0" stroke="#993556" stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .45s forwards;"/>
-    <polygon points="90,80 30,150 110,150" fill="#F1EFE8" stroke="#444"   stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .5s forwards;"/>
-    <polygon points="90,80 110,150 170,80" fill="#FAEEDA" stroke="#BA7517" stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .55s forwards;"/>
-    <polygon points="170,80 110,150 190,150" fill="#F1EFE8" stroke="#444"  stroke-width="2" style="opacity:0;animation:triPop .35s ease-out .6s forwards;"/>
+<div id="splash" onclick="document.getElementById('splash').classList.add('gone');startTimer()">
+  <svg id="splash-logo" width="160" height="120" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- Three interlocking triangles suggesting the game grid -->
+    <polygon points="80,8 152,112 8,112" fill="none" stroke="#2C2C2A" stroke-width="2.5" stroke-linejoin="round"/>
+    <polygon points="80,32 134,96 26,96" fill="#E6F1FB" stroke="#185FA5" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="80,56 116,96 44,96" fill="#B5D4F4" stroke="#185FA5" stroke-width="1.5" stroke-linejoin="round"/>
+    <!-- Small wildcard triangle -->
+    <polygon points="80,72 97,96 63,96" fill="#FBEAF0" stroke="#993556" stroke-width="1.2" stroke-linejoin="round"/>
+    <text x="80" y="92" text-anchor="middle" dominant-baseline="central" font-family="Bebas Neue, sans-serif" font-size="14" fill="#993556">?</text>
   </svg>
-  <div id="splash-title">Shimmy</div>
+  <div id="splash-title">Shimmy<br>Legacy</div>
   <div id="splash-sub">a word game of angles</div>
   <div id="splash-tap">tap to play</div>
 </div>
-
 <div id="game">
   <div id="scorebar">
     <div class="sb-card"><div class="sb-label">SCORE</div><div class="sb-value" id="score-val">0</div></div>
     <div class="sb-card"><div class="sb-label">LEVEL</div><div class="sb-level" id="level-val">1</div></div>
     <div class="sb-card"><div class="sb-label">NEXT LEVEL</div><div class="sb-next" id="next-val">15</div></div>
+    <div class="sb-card"><div class="sb-label">TIME</div><div class="sb-timer" id="timer-val">0:00</div></div>
   </div>
   <div id="settings-bar">
-    <button id="btn-howtoplay" onclick="openHowTo()">&#9432; How to Play</button>
-    <button id="btn-settings" onclick="openSettings()">&#9881; Settings</button>
+    <button id="btn-howtoplay" onclick="document.getElementById('howto-popup').classList.add('show')">&#9432; How to Play</button>
+    <button id="btn-timelog" onclick="openTimeLog()">&#9201; Level Log</button>
+    <button id="btn-highscore" onclick="openHighscores()">&#127942; Scores</button>
+    <button id="btn-settings" onclick="document.getElementById('settings-popup').classList.add('show')">&#9881; Settings</button>
   </div>
-  <div id="lock-banner">Tap any triangle to lock that letter in place.</div>
+  <div id="lock-banner">Tap a triangle to lock that letter permanently.</div>
   <div id="grid-wrap"><svg id="svg-grid" xmlns="http://www.w3.org/2000/svg"></svg></div>
-  <!-- controls drawn inside grid SVG -->
   <div id="msg"></div>
 </div>
-
-<div id="words-popup" onclick="closeWordsPopup()">
+<div id="words-popup" onclick="document.getElementById('words-popup').classList.remove('show')">
   <div id="words-popup-inner">
     <div id="words-popup-title">WORDS FOUND</div>
     <div id="words-popup-list"></div>
-    <div id="words-popup-close">tap anywhere to close</div>
+    <div id="words-popup-close">tap to close</div>
   </div>
 </div>
-
 <div id="wild-modal-wrap">
   <div id="wild-box">
-    <div id="wild-title">Choose a letter for the ? wildcard</div>
+    <div id="wild-title">Choose a letter for ?</div>
     <div id="wild-grid"></div>
     <button id="wild-cancel">Cancel</button>
   </div>
 </div>
+<div id="settings-popup" onclick="this.classList.remove('show')">
+  <div id="settings-inner" onclick="event.stopPropagation()">
+    <h2>Settings</h2>
+    <div class="settings-row">
+      <div><div class="settings-label">Vibrate</div><div class="settings-sublabel">Haptic feedback</div></div>
+      <label class="toggle-wrap"><input type="checkbox" id="toggle-vibrate" checked><span class="toggle-slider"></span></label>
+    </div>
+    <div class="settings-row">
+      <div><div class="settings-label">Restart Game</div><div class="settings-sublabel">Reset to level 1</div></div>
+      <button onclick="restartGame()" style="padding:5px 12px;border-radius:6px;border:.5px solid #ccc;background:#F1EFE8;color:#E24B4A;font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;">Restart</button>
+    </div>
+    <button id="settings-close" onclick="document.getElementById('settings-popup').classList.remove('show')">Done</button>
+  </div>
+</div>
+<div id="howto-popup" onclick="this.classList.remove('show')">
+  <div id="howto-inner" onclick="event.stopPropagation()">
+    <h2>How to Play Shimmy Legacy</h2>
+    <h3>The Grid</h3>
+    <p>24 triangles each hold a letter. The ? is a wildcard.</p>
+    <h3>Selecting Letters</h3>
+    <ul>
+      <li>Tap a triangle to start your word.</li>
+      <li>Each next letter must share a vertex with the last.</li>
+      <li>Tap a selected letter to backtrack.</li>
+      <li>Words can be 1-10 letters long.</li>
+    </ul>
+    <h3>Scoring</h3>
+    <ul>
+      <li>Tap ENTER WORD to submit. Score 1 pt per letter.</li>
+      <li>Only one word of each length per level.</li>
+      <li>Reach NEXT LEVEL target to level up.</li>
+    </ul>
+    <h3>Levelling Up</h3>
+    <p>Tap LEVEL UP! then tap a triangle to lock that letter permanently.</p>
+    <button id="howto-close" onclick="document.getElementById('howto-popup').classList.remove('show')">Got it!</button>
+  </div>
+</div>
+<div id="timelog-popup" onclick="this.classList.remove('show')">
+  <div id="timelog-inner" onclick="event.stopPropagation()">
+    <h2>Level Log</h2>
+    <div id="timelog-subtitle">CUMULATIVE TIME PER LEVEL</div>
+    <ul id="timelog-list"></ul>
+    <button id="timelog-close" onclick="document.getElementById('timelog-popup').classList.remove('show')">Close</button>
+  </div>
+</div>
+<div id="complete-popup">
+  <div id="complete-inner">
+    <div id="complete-congrats">Congratulations!</div>
+    <div id="complete-sub">YOU COMPLETED SHIMMY LEGACY</div>
+    <div id="complete-totaltime"></div>
+    <div id="complete-log-title">CUMULATIVE TIME PER LEVEL</div>
+    <ul id="complete-log-list"></ul>
+    <div id="complete-hs-row">
+      <div id="complete-hs-msg">Submit your score to the leaderboard!</div>
+      <button id="complete-hs-btn" onclick="onSubmitScore()">&#127942; Submit Score</button>
+    </div>
+    <button id="complete-close" onclick="document.getElementById('complete-popup').classList.remove('show')" style="margin-top:.7rem;">Close</button>
+  </div>
+</div>
 
+<!-- Auth Popup -->
+<div id="auth-popup">
+  <div id="auth-inner">
+    <h2 id="auth-title">Create Account</h2>
+    <div id="auth-sub">JOIN THE SHIMMY LEADERBOARD</div>
+    <div class="auth-field" id="auth-email-field">
+      <label>EMAIL ADDRESS</label>
+      <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="auth-field">
+      <label>USERNAME</label>
+      <input type="text" id="auth-username" placeholder="YourName" maxlength="16" autocomplete="username">
+    </div>
+    <div class="auth-field">
+      <label>PASSWORD</label>
+      <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div id="auth-err"></div>
+    <button id="auth-submit" onclick="doAuth()">Sign Up</button>
+    <div id="auth-toggle" onclick="toggleAuthMode()">Already have an account? Log in</div>
+    <div id="auth-guest" onclick="closeAuth()">Continue without account</div>
+  </div>
+</div>
+
+<!-- Highscore Popup -->
+<div id="hs-popup" onclick="this.classList.remove('show')">
+  <div id="hs-inner" onclick="event.stopPropagation()">
+    <h2>Leaderboard</h2>
+    <div id="hs-subtitle">FASTEST FULL COMPLETIONS</div>
+    <div id="hs-user-row" style="display:none">
+      <span id="hs-user-name"></span>
+      <span id="hs-logout" onclick="doLogout()">Log out</span>
+    </div>
+    <div id="hs-loading">Loading scores…</div>
+    <table id="hs-table" style="display:none">
+      <thead><tr><th>#</th><th>Player</th><th>Time</th></tr></thead>
+      <tbody id="hs-tbody"></tbody>
+    </table>
+    <div id="hs-empty" style="display:none">No completions yet — be the first!</div>
+    <button id="hs-close" onclick="document.getElementById('hs-popup').classList.remove('show')">Close</button>
+  </div>
+</div>
 <script>
-const DICT_URL='https://cdn.jsdelivr.net/npm/an-array-of-english-words@2/index.json';
-let wordSet=new Set(),dictLoaded=false;
-fetch(DICT_URL).then(r=>r.json()).then(ws=>{
-  ws.forEach(w=>{if(w.length>=1&&w.length<=10)wordSet.add(w.toLowerCase());});
-  dictLoaded=true;setMsg('Ready! Select letters to begin.','good');
-}).catch(()=>{dictLoaded=true;setMsg('Offline — no validation.','');});
+var DICT_URL='https://cdn.jsdelivr.net/npm/an-array-of-english-words@2/index.json';
+var wordSet=new Set(), dictLoaded=false;
+fetch(DICT_URL).then(function(r){return r.json();}).then(function(ws){
+  ws.forEach(function(w){if(w.length>=1&&w.length<=10)wordSet.add(w.toLowerCase());});
+  dictLoaded=true; setMsg('Ready! Select letters to begin.','good');
+}).catch(function(){dictLoaded=true; setMsg('Offline - no validation.','');});
 
-const VOWELS='AEIOU'.split('');
-const ALL='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+var VOWELS=['A','E','I','O','U'];
+var ALL='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 function rnd(a){return a[Math.floor(Math.random()*a.length)];}
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=b[i];b[i]=b[j];b[j]=t;}return b;}
+function setMsg(t,c){var m=document.getElementById('msg');m.textContent=t;m.className=c||'';}
 
-// ============================================================
-// GRID GEOMETRY
-// Equilateral grid 4 cols x 3 rows = 24 triangles.
-// S=100, H=86.6. Rotated 90 CW.
-// maxX_pre = 550. After rotation: x=r*H, y=550-(c*S+r*S/2)
-// ============================================================
-const S=100, H=86.6, maxX_pre=550;
+var S=100, H=86.6, maxX_pre=550;
 function R(r,c){return [r*H, maxX_pre-(c*S+r*(S/2))];}
 
-const triangles=[];
-let tid=0;
-for(let r=0;r<3;r++){
-  for(let c=0;c<4;c++){
-    const p00=R(r,c),p01=R(r,c+1),p10=R(r+1,c),p11=R(r+1,c+1);
-    const up=[p00,p01,p10];
-    const ucx=(up[0][0]+up[1][0]+up[2][0])/3,ucy=(up[0][1]+up[1][1]+up[2][1])/3;
-    triangles.push({id:tid++,row:r,col:c,up:true,pts:up,cx:ucx,cy:ucy,letter:'',locked:false});
-    const dn=[p01,p11,p10];
-    const dcx=(dn[0][0]+dn[1][0]+dn[2][0])/3,dcy=(dn[0][1]+dn[1][1]+dn[2][1])/3;
-    triangles.push({id:tid++,row:r,col:c,up:false,pts:dn,cx:dcx,cy:dcy,letter:'',locked:false});
+var triangles=[];
+var tid=0;
+for(var r=0;r<3;r++){
+  for(var c=0;c<4;c++){
+    var p00=R(r,c),p01=R(r,c+1),p10=R(r+1,c),p11=R(r+1,c+1);
+    var up=[p00,p01,p10];
+    triangles.push({id:tid++,row:r,col:c,up:true,pts:up,cx:(up[0][0]+up[1][0]+up[2][0])/3,cy:(up[0][1]+up[1][1]+up[2][1])/3,letter:'',locked:false});
+    var dn=[p01,p11,p10];
+    triangles.push({id:tid++,row:r,col:c,up:false,pts:dn,cx:(dn[0][0]+dn[1][0]+dn[2][0])/3,cy:(dn[0][1]+dn[1][1]+dn[2][1])/3,letter:'',locked:false});
   }
 }
 
-const PAD=8, bbW=3*H+PAD*2, bbH=maxX_pre+PAD*2;
-const svg=document.getElementById('svg-grid');
-svg.setAttribute('viewBox',`${-PAD} ${-PAD} ${bbW} ${bbH}`);
+var PAD=8, bbW=3*H+PAD*2, bbH=maxX_pre+PAD*2;
+var svg=document.getElementById('svg-grid');
+svg.setAttribute('viewBox',(-PAD)+' '+(-PAD)+' '+bbW+' '+bbH);
 svg.setAttribute('width',Math.round(bbW));
 svg.setAttribute('height',Math.round(bbH));
 
-const SNAP=0.5;
+var SNAP=0.5;
 function ptEq(a,b){return Math.abs(a[0]-b[0])<SNAP&&Math.abs(a[1]-b[1])<SNAP;}
-const adjMap={};
-triangles.forEach(t=>{
+var adjMap={};
+triangles.forEach(function(t){
   adjMap[t.id]=[];
-  triangles.forEach(u=>{
+  triangles.forEach(function(u){
     if(u.id===t.id)return;
-    if(t.pts.some(tp=>u.pts.some(up=>ptEq(tp,up))))adjMap[t.id].push(u.id);
+    if(t.pts.some(function(tp){return u.pts.some(function(up){return ptEq(tp,up);});}))adjMap[t.id].push(u.id);
   });
 });
 
-const triEls={};
-triangles.forEach(t=>{
-  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-  g.classList.add('tri');
-  const poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
-  poly.setAttribute('points',t.pts.map(p=>p.join(',')).join(' '));
+var triEls={};
+triangles.forEach(function(t){
+  var g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  var poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  poly.setAttribute('points',t.pts.map(function(p){return p.join(',');}).join(' '));
+  poly.setAttribute('fill','#F1EFE8');
+  poly.setAttribute('stroke','#444');
+  poly.setAttribute('stroke-width','1.8');
   g.appendChild(poly);
-  const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
-  txt.setAttribute('x',t.cx); txt.setAttribute('y',t.cy); txt.setAttribute('font-size','28');
+  var txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+  txt.setAttribute('x',t.cx); txt.setAttribute('y',t.cy);
+  txt.setAttribute('font-size','28');
+  txt.setAttribute('text-anchor','middle');
+  txt.setAttribute('dominant-baseline','central');
+  txt.setAttribute('font-family','Bebas Neue, sans-serif');
+  txt.setAttribute('fill','#2C2C2A');
+  txt.setAttribute('pointer-events','none');
   g.appendChild(txt);
-  g.addEventListener('click',()=>onTriClick(t.id));
+  g.style.cursor='pointer';
+  (function(id){g.addEventListener('click',function(){onTriClick(id);});})(t.id);
   svg.appendChild(g);
   triEls[t.id]=g;
 });
 
-// DOT TRIANGLE (top-left empty corner)
-const triW=3*H, triH_dot=maxX_pre-4*S;
-// Dot triangle: right-angle at (0,0), legs along x-axis (length triW) and y-axis (length triH_dot).
-// Hypotenuse from (triW,0) to (0,triH_dot): equation x/triW + y/triH_dot = 1.
-//
-// 4 rows of 4,3,2,1 dots. Use a fixed dot radius and tight uniform spacing.
-// Each row k sits at a fixed y. Dots in the row are spaced at fixed xGap.
-// All dots must be safely inside the hypotenuse.
-const dotR=11;
-const xGap=44;   // horizontal gap between dot centres
-const yGap=34;   // vertical gap between rows
-const xOff=18;   // left margin (from x=0)
-const yOff=6;    // top margin (from y=0)
-// rows: 4 dots, 3 dots, 2 dots, 1 dot
-const dotRowDefs=[[4,0],[3,0],[2,0],[1,0]]; // [count, x offset adjust]
-const dotPositions=[];
-let dnc=1;
-dotRowDefs.forEach(([nd],k)=>{
-  const cy=yOff+(k+0.5)*yGap;
-  for(let j=0;j<nd;j++){
-    const cx=xOff+j*xGap;
-    dotPositions.push({n:dnc,cx,cy});
-    dnc++;
-  }
+var triW=3*H, triH_dot=maxX_pre-4*S;
+var dotR=11, xGap=44, yGap=34, xOff=18, yOff=6;
+var dotPositions=[];
+var dnc=1;
+[[4],[3],[2],[1]].forEach(function(arr,k){
+  var nd=arr[0];
+  var cy=yOff+(k+0.5)*yGap;
+  for(var j=0;j<nd;j++){dotPositions.push({n:dnc++,cx:xOff+j*xGap,cy:cy});}
 });
-const dotGroup=document.createElementNS('http://www.w3.org/2000/svg','g');
+var dotGroup=document.createElementNS('http://www.w3.org/2000/svg','g');
 dotGroup.style.cursor='pointer';
 dotGroup.addEventListener('click',openWordsPopup);
-const dotBg=document.createElementNS('http://www.w3.org/2000/svg','polygon');
-dotBg.setAttribute('points',`0,0 ${triW},0 0,${triH_dot}`);
+var dotBg=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+dotBg.setAttribute('points','0,0 '+triW+',0 0,'+triH_dot);
 dotBg.setAttribute('fill','#E6F1FB'); dotBg.setAttribute('stroke','#185FA5');
-dotBg.setAttribute('stroke-width','1.5'); dotBg.setAttribute('stroke-linejoin','round');
+dotBg.setAttribute('stroke-width','1.5');
 dotGroup.appendChild(dotBg);
-dotPositions.forEach(({n,cx,cy})=>{
-  const circ=document.createElementNS('http://www.w3.org/2000/svg','circle');
-  circ.setAttribute('cx',cx); circ.setAttribute('cy',cy); circ.setAttribute('r',dotR);
-  circ.setAttribute('id',`dot-${n}`); circ.setAttribute('fill','#D3D1C7');
-  circ.setAttribute('stroke','#888'); circ.setAttribute('stroke-width','1');
-  dotGroup.appendChild(circ);
-  const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
-  lbl.setAttribute('x',cx); lbl.setAttribute('y',cy);
-  lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('dominant-baseline','central');
-  lbl.setAttribute('font-family','Bebas Neue, sans-serif'); lbl.setAttribute('font-size','13');
-  lbl.setAttribute('fill','#555'); lbl.setAttribute('pointer-events','none'); lbl.setAttribute('id',`dotlbl-${n}`);
-  lbl.textContent=n; dotGroup.appendChild(lbl);
+dotPositions.forEach(function(dp){
+  var ci=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  ci.setAttribute('cx',dp.cx); ci.setAttribute('cy',dp.cy); ci.setAttribute('r',dotR);
+  ci.setAttribute('id','dot-'+dp.n); ci.setAttribute('fill','#D3D1C7'); ci.setAttribute('stroke','#888'); ci.setAttribute('stroke-width','1');
+  dotGroup.appendChild(ci);
+  var lb=document.createElementNS('http://www.w3.org/2000/svg','text');
+  lb.setAttribute('x',dp.cx); lb.setAttribute('y',dp.cy);
+  lb.setAttribute('text-anchor','middle'); lb.setAttribute('dominant-baseline','central');
+  lb.setAttribute('font-family','Bebas Neue, sans-serif'); lb.setAttribute('font-size','13');
+  lb.setAttribute('fill','#555'); lb.setAttribute('pointer-events','none'); lb.setAttribute('id','dotlbl-'+dp.n);
+  lb.textContent=dp.n; dotGroup.appendChild(lb);
 });
 svg.appendChild(dotGroup);
 
 function updateDots(){
-  for(let i=1;i<=10;i++){
-    const c=document.getElementById(`dot-${i}`),l=document.getElementById(`dotlbl-${i}`);
-    const done=foundLengths.has(i);
-    if(c){c.setAttribute('fill',done?'#0F6E56':'#D3D1C7');c.setAttribute('stroke',done?'#085041':'#888');}
-    if(l)l.setAttribute('fill',done?'#fff':'#555');
+  for(var i=1;i<=10;i++){
+    var ci=document.getElementById('dot-'+i), lb=document.getElementById('dotlbl-'+i);
+    var done=foundLengths.has(i);
+    if(ci){ci.setAttribute('fill',done?'#0F6E56':'#D3D1C7');ci.setAttribute('stroke',done?'#085041':'#888');}
+    if(lb)lb.setAttribute('fill',done?'#fff':'#555');
   }
 }
 
-// ============================================================
-// ============================================================
-// BOTTOM CONTROLS — drawn inside the grid SVG
-//
-// The bottom-left of the rotated parallelogram has an empty
-// triangular gap — exactly mirroring the dot triangle at top-left.
-//
-// Grid SVG viewBox origin is at (-PAD,-PAD).
-// Bottom-left empty triangle vertices in SVG coords:
-//   BP1 = (-PAD,  maxX_pre+PAD) = (-8,  558)  bottom-left of bbox
-//   BP2 = (3H+PAD, maxX_pre-3S/2+PAD) = (267.8, 408)  bottom-right of grid
-//   BP3 = (3H+PAD, maxX_pre+PAD) = (267.8, 558)  bottom-right of bbox
-// Right angle at BP3. Horizontal leg 275.8px, vertical leg 150px.
-// Hypotenuse = bottom slant of parallelogram (30° angle).
-// ============================================================
-
 function svgEl(tag,attrs){
-  const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
-  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+  var el=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  Object.keys(attrs).forEach(function(k){el.setAttribute(k,attrs[k]);});
   return el;
 }
 
-// Bottom triangle vertices in SVG viewBox space
-const BP1x=-PAD,       BP1y=maxX_pre+PAD;    // (-8,  558) bottom-left
-const BP2x=3*H+PAD,    BP2y=maxX_pre-3*S/2+PAD; // (267.8, 408) grid bottom-right
-const BP3x=3*H+PAD,    BP3y=maxX_pre+PAD;    // (267.8, 558) bbox bottom-right
+var BP1x=-PAD, BP1y=maxX_pre+PAD;
+var BP2x=3*H+PAD, BP2y=maxX_pre-3*S/2+PAD;
+var BP3x=3*H+PAD, BP3y=maxX_pre+PAD;
 
-// Triangle fill
-const btBg=svgEl('polygon',{
-  points:`${BP1x},${BP1y} ${BP2x},${BP2y} ${BP3x},${BP3y}`,
-  fill:'#E1F5EE',stroke:'#0F6E56','stroke-width':'1.5','stroke-linejoin':'round',
-  'pointer-events':'none'
-});
-svg.appendChild(btBg);
+svg.appendChild(svgEl('polygon',{
+  points:BP1x+','+BP1y+' '+BP2x+','+BP2y+' '+BP3x+','+BP3y,
+  fill:'#E1F5EE',stroke:'#0F6E56','stroke-width':'1.5','pointer-events':'none'
+}));
 
-// Layout inside the triangle:
-// Total width: BP1x to BP3x = 275.8
-// Total height: BP3y - BP2y = 150
-// Split: left 58% = word bar + X, right 42% = buttons
-const BTtotalW = BP3x - BP1x; // 275.8
-const splitX = BP1x + BTtotalW * 0.58; // ~152
+var BTtotalW=BP3x-BP1x, splitX=BP1x+BTtotalW*0.58;
+var BAR_W=230, BAR_H2=36, XR=15;
+var barCX=BP1x+0.5764*(BP2x-BP1x)+0.4778*(BAR_H2/2);
+var barCY=BP1y+0.5764*(BP2y-BP1y)+0.8785*(BAR_H2/2);
+var XCX=50.93, XCY=BP1y-XR;
+var EX=splitX+6, EY=BP3y-40, EW=BP3x-splitX-10, EH=34;
+var LX=splitX+14, LH=28, LW=EW-16, LY=EY-LH-6;
 
-// Bar: centred in left zone, rotated -30° to match hypotenuse
-const BAR_W=230, BAR_H2=36;
-const XR=15;
-// Hypotenuse direction unit vector (BP1→BP2): (0.8785, -0.4778)
-// Inward normal (toward BP3, INSIDE triangle): (0.4778, 0.8785)
-const hypUx=0.8785, hypUy=-0.4778;
-const normX=0.4778, normY=0.8785;
-const INSET=BAR_H2/2; // bar edge flush with hypotenuse
-const barCX = BP1x + 0.5764*(BP2x-BP1x) + normX*INSET;
-const barCY = BP1y + 0.5764*(BP2y-BP1y) + normY*INSET;
-// X button: along hyp, flush with hypotenuse
-// X button: tangent to both hypotenuse and bottom edge of triangle
-// Computed: cx where dist-to-hyp = XR, cy = BP1y - XR (tangent to bottom)
-const XCX = 50.93;
-const XCY = BP1y - XR;
-
-// Enter Word button: lower-right zone — moved down 8px
-const EX=splitX+6, EY=BP3y-40, EW=BP3x-splitX-10, EH=34;
-// Level Up button: above Enter Word — also moved down 8px
-const LX=splitX+14, LH=28, LW=EW-16, LY=EY-LH-6;
-
-// Draw buttons first (behind bar)
-const enterG=svgEl('g',{cursor:'pointer',id:'enter-g'});
-const enterBg=svgEl('rect',{x:EX,y:EY,width:EW,height:EH,rx:'5',fill:'#0F6E56'});
+var enterG=svgEl('g',{cursor:'pointer',id:'enter-g'});
+var enterBg=svgEl('rect',{x:EX,y:EY,width:EW,height:EH,rx:'5',fill:'#9EC8B9'});
 enterG.appendChild(enterBg);
-const enterTxt=svgEl('text',{x:EX+EW/2,y:EY+EH/2,
-  'text-anchor':'middle','dominant-baseline':'central',
-  'font-family':'Bebas Neue, sans-serif','font-size':'15',fill:'#fff','pointer-events':'none'});
+var enterTxt=svgEl('text',{x:EX+EW/2,y:EY+EH/2,'text-anchor':'middle','dominant-baseline':'central','font-family':'Bebas Neue, sans-serif','font-size':'15',fill:'#fff','pointer-events':'none'});
 enterTxt.textContent='ENTER WORD';
 enterG.appendChild(enterTxt);
 enterG.addEventListener('click',doEnter);
 svg.appendChild(enterG);
 
-const levelUpG=svgEl('g',{cursor:'pointer',id:'levelup-g',opacity:'0','pointer-events':'none'});
-const levelUpBg=svgEl('rect',{x:LX,y:LY,width:LW,height:LH,rx:'5',fill:'#185FA5'});
+var levelUpG=svgEl('g',{cursor:'pointer',id:'levelup-g',opacity:'0','pointer-events':'none'});
+var levelUpBg=svgEl('rect',{x:LX,y:LY,width:LW,height:LH,rx:'5',fill:'#185FA5'});
 levelUpG.appendChild(levelUpBg);
-const levelUpTxt=svgEl('text',{x:LX+LW/2,y:LY+LH/2,
-  'text-anchor':'middle','dominant-baseline':'central',
-  'font-family':'Bebas Neue, sans-serif','font-size':'13',fill:'#fff','pointer-events':'none'});
+var levelUpTxt=svgEl('text',{x:LX+LW/2,y:LY+LH/2,'text-anchor':'middle','dominant-baseline':'central','font-family':'Bebas Neue, sans-serif','font-size':'13',fill:'#fff','pointer-events':'none'});
 levelUpTxt.textContent='LEVEL UP!';
 levelUpG.appendChild(levelUpTxt);
 levelUpG.addEventListener('click',startLock);
 svg.appendChild(levelUpG);
 
-// Word bar — real rect, rotated -30° to match the hypotenuse
-const wordBarBg=svgEl('rect',{
-  x:barCX-BAR_W/2,y:barCY-BAR_H2/2,width:BAR_W,height:BAR_H2,rx:'6',
-  fill:'#F1EFE8',stroke:'#aaa','stroke-width':'1.5',
-  transform:`rotate(-30,${barCX},${barCY})`,
-  'pointer-events':'none'
-});
-svg.appendChild(wordBarBg);
+svg.appendChild(svgEl('rect',{x:barCX-BAR_W/2,y:barCY-BAR_H2/2,width:BAR_W,height:BAR_H2,rx:'6',fill:'#F1EFE8',stroke:'#aaa','stroke-width':'1.5',transform:'rotate(-30,'+barCX+','+barCY+')','pointer-events':'none'}));
 
-const wordText=svgEl('text',{x:barCX,y:barCY,
-  'text-anchor':'middle','dominant-baseline':'central',
-  'font-family':'Bebas Neue, sans-serif','font-size':'20',fill:'#2C2C2A',
-  transform:`rotate(-30,${barCX},${barCY})`,'pointer-events':'none'});
-wordText.textContent='—';
+var wordText=svgEl('text',{x:barCX,y:barCY,'text-anchor':'middle','dominant-baseline':'central','font-family':'Bebas Neue, sans-serif','font-size':'20',fill:'#2C2C2A',transform:'rotate(-30,'+barCX+','+barCY+')','pointer-events':'none'});
+wordText.textContent='-';
 svg.appendChild(wordText);
 
-const lenTxt=svgEl('text',{x:barCX+BAR_W/2-4,y:barCY-BAR_H2/2+2,
-  'text-anchor':'end','font-family':'DM Mono, monospace','font-size':'9',fill:'#888',
-  transform:`rotate(-30,${barCX},${barCY})`,'pointer-events':'none'});
+var lenTxt=svgEl('text',{x:barCX+BAR_W/2-4,y:barCY-BAR_H2/2+2,'text-anchor':'end','font-family':'DM Mono, monospace','font-size':'9',fill:'#888',transform:'rotate(-30,'+barCX+','+barCY+')','pointer-events':'none'});
 svg.appendChild(lenTxt);
 
-// X button (upright)
-const xCircle=svgEl('circle',{cx:XCX,cy:XCY,r:XR,fill:'#dddbd3',stroke:'#aaa','stroke-width':'1.2',cursor:'pointer'});
+var xCircle=svgEl('circle',{cx:XCX,cy:XCY,r:XR,fill:'#dddbd3',stroke:'#aaa','stroke-width':'1.2',cursor:'pointer'});
 svg.appendChild(xCircle);
-const xLabel=svgEl('text',{x:XCX,y:XCY,'text-anchor':'middle','dominant-baseline':'central',
-  'font-family':'DM Mono, monospace','font-size':'14','font-weight':'500',fill:'#555','pointer-events':'none'});
-xLabel.textContent='\u2715';
+var xLabel=svgEl('text',{x:XCX,y:XCY,'text-anchor':'middle','dominant-baseline':'central','font-family':'DM Mono, monospace','font-size':'14',fill:'#555','pointer-events':'none'});
+xLabel.textContent='x';
 svg.appendChild(xLabel);
 xCircle.addEventListener('click',doClear);
 
-const BW=Math.round(3*H+PAD*2); // kept for any references
-
 function showLevelUp(show){
-  const g=document.getElementById('levelup-g');
+  var g=document.getElementById('levelup-g');
   g.setAttribute('opacity',show?'1':'0');
   g.setAttribute('pointer-events',show?'all':'none');
+  levelUpTxt.textContent=unlockPhase?'UNLOCK!':'LEVEL UP!';
+  levelUpBg.setAttribute('fill',unlockPhase?'#854F0B':'#185FA5');
 }
 
-
-// ============================================================
-// LETTER POOL
-// ============================================================
-const MIDDLE_IDS=triangles.filter(t=>t.row===1).map(t=>t.id);
+var MIDDLE_IDS=triangles.filter(function(t){return t.row===1;}).map(function(t){return t.id;});
 
 function buildPool(){
-  const req=['S','T','R','N','G','C','L','D','H'];
-  const base=['A','E','I','O'];
-  const ev=shuffle([...VOWELS]).slice(0,2);
-  const wf=shuffle(['W','F','M','K','P','Y']).slice(0,2);
-  const anyTwo=[rnd(ALL),rnd(ALL)];
-  const fill=[rnd(ALL),rnd(ALL),rnd(ALL),rnd(ALL)];
-  return shuffle([...req,...base,...ev,...wf,...anyTwo,...fill,'?']).slice(0,24);
+  var req='STRNGCLDH'.split('');
+  var base='AEIO'.split('');
+  var ev=shuffle(VOWELS.slice()).slice(0,2);
+  var wf=shuffle('WFMKPY'.split('')).slice(0,2);
+  var extra=[rnd(ALL),rnd(ALL),rnd(ALL),rnd(ALL),rnd(ALL),rnd(ALL),'?'];
+  return shuffle(req.concat(base,ev,wf,extra)).slice(0,24);
 }
 
 function assignLetters(){
-  const freeMid=MIDDLE_IDS.filter(id=>!triangles[id].locked);
-  const freeOut=triangles.filter(t=>t.row!==1&&!t.locked).map(t=>t.id);
-  const pool=buildPool();
-  const midL=[];let rem=[...pool];
-  const wi=rem.indexOf('?');
+  var freeMid=MIDDLE_IDS.filter(function(id){return !triangles[id].locked;});
+  var freeOut=triangles.filter(function(t){return t.row!==1&&!t.locked;}).map(function(t){return t.id;});
+  var freeAll=freeMid.concat(freeOut);
+  // If only 1 triangle is unlocked, force it to be a vowel
+  if(freeAll.length===1){
+    triangles[freeAll[0]].letter=rnd(VOWELS);
+    renderLetters();
+    return;
+  }
+  var pool=buildPool();
+  var midL=[]; var rem=pool.slice();
+  var wi=rem.indexOf('?');
   if(wi>=0&&freeMid.length>midL.length){midL.push('?');rem.splice(wi,1);}
-  let vc=0;
-  for(let i=rem.length-1;i>=0&&vc<2&&midL.length<freeMid.length;i--){
-    if(VOWELS.includes(rem[i])){midL.push(rem[i]);rem.splice(i,1);vc++;}
+  var vc=0;
+  for(var i=rem.length-1;i>=0&&vc<2&&midL.length<freeMid.length;i--){
+    if(VOWELS.indexOf(rem[i])>=0){midL.push(rem[i]);rem.splice(i,1);vc++;}
   }
   while(midL.length<freeMid.length&&rem.length>0)midL.push(rem.shift());
-  shuffle(freeMid).forEach((id,i)=>{triangles[id].letter=midL[i]||rnd(ALL);});
-  shuffle(freeOut).forEach((id,i)=>{triangles[id].letter=shuffle(rem)[i]||rnd(ALL);});
+  shuffle(freeMid).forEach(function(id,i){triangles[id].letter=midL[i]||rnd(ALL);});
+  shuffle(freeOut).forEach(function(id,i){triangles[id].letter=rem[i]||rnd(ALL);});
   renderLetters();
 }
 
 function renderLetters(){
-  triangles.forEach(t=>{
-    const g=triEls[t.id];
-    g.querySelector('text').textContent=t.letter;
-    g.classList.remove('wild','locked','reachable','lockmode');
-    if(t.letter==='?')g.classList.add('wild');
-    if(t.locked)g.classList.add('locked');
-    if(lockMode)g.classList.add('lockmode');
+  triangles.forEach(function(t){
+    var g=triEls[t.id];
+    var poly=g.querySelector('polygon');
+    var txt=g.querySelector('text');
+    txt.textContent=t.letter;
+    if(t.locked){
+      poly.setAttribute('fill','#FAEEDA'); poly.setAttribute('stroke','#BA7517');
+      txt.setAttribute('fill','#854F0B');
+    } else if(t.letter==='?'){
+      poly.setAttribute('fill','#FBEAF0'); poly.setAttribute('stroke','#444');
+      txt.setAttribute('fill','#993556');
+    } else {
+      poly.setAttribute('fill','#F1EFE8'); poly.setAttribute('stroke','#444');
+      txt.setAttribute('fill','#2C2C2A');
+    }
+    poly.setAttribute('stroke-width','1.8');
   });
 }
 
-// ============================================================
-// WILDCARD PICKER
-// ============================================================
-const wg=document.getElementById('wild-grid');
-ALL.forEach(c=>{
-  const b=document.createElement('button');b.className='wl-btn';b.textContent=c;
-  b.addEventListener('click',()=>{
+var wildResolve=null;
+var wg=document.getElementById('wild-grid');
+ALL.forEach(function(c){
+  var b=document.createElement('button'); b.className='wl-btn'; b.textContent=c;
+  b.addEventListener('click',function(){
     document.getElementById('wild-modal-wrap').classList.remove('show');
-    if(wildResolve)wildResolve(c);wildResolve=null;
+    if(wildResolve){wildResolve(c);wildResolve=null;}
   });
   wg.appendChild(b);
 });
-document.getElementById('wild-cancel').addEventListener('click',()=>{
+document.getElementById('wild-cancel').addEventListener('click',function(){
   document.getElementById('wild-modal-wrap').classList.remove('show');
-  if(wildResolve)wildResolve(null);wildResolve=null;
+  if(wildResolve){wildResolve(null);wildResolve=null;}
 });
-let wildResolve=null;
-function pickWild(){return new Promise(r=>{wildResolve=r;document.getElementById('wild-modal-wrap').classList.add('show');});}
-
-// ============================================================
-// GAME STATE
-// ============================================================
-let score=0,level=1,threshold=15,selected=[],wildChoices={};
-let foundWords=new Set(),foundLengths=new Set(),lockMode=false,wildLocked=false;
-const foundList=[];
-
-function updateView(){
-  triangles.forEach(t=>{
-    const g=triEls[t.id];
-    g.classList.remove('selected','inpath','reachable','lockmode');
-    if(lockMode){g.classList.add('lockmode');return;}
-    const si=selected.indexOf(t.id);
-    if(si===selected.length-1&&selected.length>0)g.classList.add('selected');
-    else if(si>=0)g.classList.add('inpath');
-    const txt=g.querySelector('text');
-    txt.textContent=t.letter==='?'?(wildChoices[t.id]?wildChoices[t.id]+'*':'?'):t.letter;
-  });
-  if(!lockMode&&selected.length>0){
-    const last=selected[selected.length-1];
-    adjMap[last].forEach(nid=>{if(!selected.includes(nid))triEls[nid].classList.add('reachable');});
-  }
-  const word=selected.map(id=>{const t=triangles[id];return t.letter==='?'?(wildChoices[id]||'?'):t.letter;}).join('');
-  wordText.textContent=lockMode?'—':word||'—';
-  lenTxt.textContent=(!lockMode&&selected.length>0)?`${selected.length}/10`:'';
-  const canEnter=!lockMode&&selected.length>=1&&!word.includes('?');
-  enterBg.setAttribute('fill',canEnter?'#0F6E56':'#9EC8B9');
-  document.getElementById('enter-g').setAttribute('pointer-events',canEnter?'all':'none');
-  xCircle.setAttribute('opacity',lockMode?'0.3':'1');
-  xCircle.setAttribute('pointer-events',lockMode?'none':'all');
+function pickWild(){
+  return new Promise(function(resolve){wildResolve=resolve; document.getElementById('wild-modal-wrap').classList.add('show');});
 }
 
-async function onTriClick(id){
+var score=0, level=1, threshold=15, selected=[], wildChoices={};
+var foundWords=new Set(), foundLengths=new Set(), lockMode=false, wildLocked=false;
+var foundList=[];
+var unlockPhase=false; // true once all 24 triangles have been locked
+var levelTimelog=[]; // [{level, seconds}]
+
+function updateView(){
+  var word=selected.map(function(id){var t=triangles[id];return t.letter==='?'?(wildChoices[id]||'?'):t.letter;}).join('');
+  var last=selected.length>0?selected[selected.length-1]:-1;
+  triangles.forEach(function(t){
+    var g=triEls[t.id];
+    var poly=g.querySelector('polygon');
+    var txt=g.querySelector('text');
+    var si=selected.indexOf(t.id);
+    var isLast=(si===selected.length-1&&selected.length>0);
+    var isPath=(si>=0&&!isLast);
+    var isReach=(!isLast&&!isPath&&selected.length>0&&adjMap[last].indexOf(t.id)>=0&&selected.indexOf(t.id)<0);
+    poly.setAttribute('stroke-dasharray','');
+    if(lockMode){
+      poly.setAttribute('stroke-width','2'); poly.setAttribute('stroke-dasharray','5 3');
+      var isWildBlocked=(t.letter==='?'&&!t.locked&&wildLocked&&!unlockPhase);
+      var isUnavailable=unlockPhase?(!t.locked):(t.locked||isWildBlocked);
+      if(isUnavailable){
+        poly.setAttribute('fill','#E0DED8'); poly.setAttribute('stroke','#bbb'); poly.setAttribute('stroke-dasharray','');
+        txt.setAttribute('fill','#bbb');
+      } else {
+        poly.setAttribute('fill',unlockPhase?'#FAEEDA':'#F1EFE8');
+        poly.setAttribute('stroke',unlockPhase?'#BA7517':'#185FA5');
+        txt.setAttribute('fill',unlockPhase?'#854F0B':'#2C2C2A');
+      }
+    } else if(isLast){
+      poly.setAttribute('fill','#B5D4F4'); poly.setAttribute('stroke','#185FA5'); poly.setAttribute('stroke-width','2.5');
+      txt.setAttribute('fill','#0C447C');
+    } else if(isPath){
+      poly.setAttribute('fill','#9FE1CB'); poly.setAttribute('stroke','#0F6E56'); poly.setAttribute('stroke-width','2.5');
+      txt.setAttribute('fill','#0C447C');
+    } else if(isReach){
+      poly.setAttribute('fill','#E4E4DC'); poly.setAttribute('stroke','#999'); poly.setAttribute('stroke-width','1.8');
+      txt.setAttribute('fill','#2C2C2A');
+    } else if(t.locked){
+      poly.setAttribute('fill','#FAEEDA'); poly.setAttribute('stroke','#BA7517'); poly.setAttribute('stroke-width','1.8');
+      txt.setAttribute('fill','#854F0B');
+    } else if(t.letter==='?'){
+      poly.setAttribute('fill','#FBEAF0'); poly.setAttribute('stroke','#444'); poly.setAttribute('stroke-width','1.8');
+      txt.setAttribute('fill','#993556');
+    } else {
+      poly.setAttribute('fill','#F1EFE8'); poly.setAttribute('stroke','#444'); poly.setAttribute('stroke-width','1.8');
+      txt.setAttribute('fill','#2C2C2A');
+    }
+    txt.textContent=t.letter==='?'?(wildChoices[t.id]?wildChoices[t.id]+'*':'?'):t.letter;
+  });
+  wordText.textContent=lockMode?'-':word||'-';
+  lenTxt.textContent=(!lockMode&&selected.length>0)?(selected.length+'/10'):'';
+  var canEnter=!lockMode&&selected.length>=1&&word.indexOf('?')<0;
+  enterBg.setAttribute('fill',canEnter?'#0F6E56':'#9EC8B9');
+}
+
+function onTriClick(id){
   if(document.getElementById('wild-modal-wrap').classList.contains('show'))return;
   if(lockMode){
-    if(triangles[id].locked){
-      vibrate([30,40,30]);
-      setMsg('That letter is already locked — choose a different triangle.','bad');
-      return;
+    if(unlockPhase){
+      if(!triangles[id].locked){setMsg('That triangle is already unlocked.','bad');return;}
+      doUnlock(id);return;
     }
+    if(triangles[id].locked){setMsg('Already locked - choose another.','bad');return;}
+    if(triangles[id].letter==='?'&&wildLocked){setMsg('Already have a locked wildcard.','bad');return;}
     doLock(id);return;
   }
-  const si=selected.indexOf(id);
+  var si=selected.indexOf(id);
   if(si>=0){
-    vibrate(8);
-    selected.slice(si).forEach(rid=>{if(triangles[rid].letter==='?')delete wildChoices[rid];});
+    selected.slice(si).forEach(function(rid){if(triangles[rid].letter==='?')delete wildChoices[rid];});
     selected=selected.slice(0,si);updateView();setMsg('');return;
   }
-  if(selected.length>=10){vibrate([30,40,30]);setMsg('Max 10 letters.','bad');return;}
-  if(selected.length>0&&!adjMap[selected[selected.length-1]].includes(id)){vibrate([30,40,30]);setMsg('Must share a point!','bad');return;}
+  if(selected.length>=10){setMsg('Max 10 letters.','bad');return;}
+  if(selected.length>0&&adjMap[selected[selected.length-1]].indexOf(id)<0){setMsg('Must share a vertex!','bad');return;}
   if(triangles[id].letter==='?'){
-    vibrate(18);
-    setMsg('Choose a letter for the wildcard...','info');
-    const c=await pickWild();
-    if(!c){setMsg('Cancelled.','');return;}
-    wildChoices[id]=c;
-  } else {
-    vibrate(18);
+    setMsg('Choose a letter for ?...','info');
+    pickWild().then(function(c){
+      if(!c){setMsg('','');return;}
+      wildChoices[id]=c;
+      selected.push(id);setMsg('');updateView();
+    });
+    return;
   }
   selected.push(id);setMsg('');updateView();
 }
 
 function doClear(){
   if(lockMode)return;
-  vibrate(12);
-  selected.forEach(id=>{if(triangles[id].letter==='?')delete wildChoices[id];});
-  selected=[];updateView();setMsg('');renderLetters();
+  selected.forEach(function(id){if(triangles[id].letter==='?')delete wildChoices[id];});
+  selected=[];updateView();setMsg('');
 }
 
 function doEnter(){
   if(lockMode)return;
-  const len=selected.length;if(!len)return;
-  if(foundLengths.has(len)){vibrate([30,40,30]);setMsg(`Already found a ${len}-letter word!`,'bad');return;}
-  const word=selected.map(id=>{const t=triangles[id];
-    return(t.letter==='?'?wildChoices[id]:t.letter).toLowerCase();}).join('');
-  if(word.includes('?')){vibrate([30,40,30]);setMsg('Wildcard not set.','bad');return;}
-  if(dictLoaded&&!wordSet.has(word)){vibrate([30,40,30]);setMsg(`"${word.toUpperCase()}" not in dictionary.`,'bad');return;}
-  vibrate([20,30,60]);
-  foundWords.add(word.toUpperCase());foundLengths.add(len);score+=len;
-  foundList.push({word:word.toUpperCase(),len});
+  var len=selected.length; if(!len)return;
+  if(foundLengths.has(len)){setMsg('Already found a '+len+'-letter word!','bad');return;}
+  var word=selected.map(function(id){var t=triangles[id];return(t.letter==='?'?wildChoices[id]:t.letter).toLowerCase();}).join('');
+  if(word.indexOf('?')>=0){setMsg('Wildcard not set.','bad');return;}
+  if(dictLoaded&&!wordSet.has(word)){setMsg('"'+word.toUpperCase()+'" not in dictionary.','bad');return;}
+  foundWords.add(word.toUpperCase()); foundLengths.add(len); score+=len;
+  foundList.push({word:word.toUpperCase(),len:len});
   document.getElementById('score-val').textContent=score;
   document.getElementById('next-val').textContent=threshold;
-  selected.forEach(id=>{if(triangles[id].letter==='?')delete wildChoices[id];});
-  selected=[];renderLetters();updateView();updateDots();
-  if(score>=threshold){
-    showLevelUp(true);
-    vibrate([20,20,20,20,80]);
-    setMsg(`Score ${score}! Level Up available!`,'info');
-  } else {
-    setMsg(`"${word.toUpperCase()}" +${len} pts!`,'good');
-    vibrate([15,10,15]);
-  }
+  selected.forEach(function(id){if(triangles[id].letter==='?')delete wildChoices[id];});
+  selected=[]; renderLetters(); updateView(); updateDots();
+  if(score>=threshold){showLevelUp(true);setMsg('Score '+score+'! Level Up available!','info');}
+  else{setMsg('"'+word.toUpperCase()+'" +'+len+' pts!','good');}
 }
 
 function openWordsPopup(){
-  const list=document.getElementById('words-popup-list');list.innerHTML='';
-  if(!foundList.length){
-    list.innerHTML='<div style="font-size:12px;color:#888;">No words found yet.</div>';
-  } else {
-    foundList.forEach(({word,len})=>{
-      const s=document.createElement('span');
-      s.className=`fw-full l${Math.min(len,10)}`;
-      s.textContent=`${word} (${len})`;list.appendChild(s);
-    });
-  }
+  var list=document.getElementById('words-popup-list'); list.innerHTML='';
+  if(!foundList.length){list.innerHTML='<div style="font-size:12px;color:#888;">No words yet.</div>';}
+  else{foundList.forEach(function(fw){var s=document.createElement('span');s.className='fw-full l'+Math.min(fw.len,10);s.textContent=fw.word+' ('+fw.len+')';list.appendChild(s);});}
   document.getElementById('words-popup').classList.add('show');
 }
-function closeWordsPopup(){document.getElementById('words-popup').classList.remove('show');}
 
 function startLock(){
-  lockMode=true;showLevelUp(false);
+  if(unlockPhase){startUnlock();return;}
+  lockMode=true; showLevelUp(false);
+  document.getElementById('lock-banner').textContent='Tap a triangle to lock that letter permanently.';
   document.getElementById('lock-banner').classList.add('show');
-  triangles.forEach(t=>{
-    if(t.locked) triEls[t.id].classList.add('lock-unavailable');
-    if(t.letter==='?'&&!t.locked&&wildLocked) triEls[t.id].classList.add('wild-blocked');
-  });
-  selected.forEach(id=>{if(triangles[id].letter==='?')delete wildChoices[id];});
-  selected=[];updateView();
+  selected.forEach(function(id){if(triangles[id].letter==='?')delete wildChoices[id];});
+  selected=[]; updateView();
 }
 
 function doLock(id){
-  const ll=triangles[id].letter;
-  // Prevent locking a ? if one has already been locked
-  if(ll==='?'&&wildLocked){
-    lockMode=false;
-    triangles.forEach(t=>triEls[t.id].classList.remove('wild-blocked','lock-unavailable'));
-    document.getElementById('lock-banner').classList.remove('show');
-    selected.forEach(i=>{if(triangles[i].letter==='?')delete wildChoices[i];});
-    selected=[];updateView();
-    setMsg('You can only lock one wildcard — choose a different triangle.','bad');
-    return;
-  }
+  var ll=triangles[id].letter;
   if(ll==='?') wildLocked=true;
-  triangles[id].locked=true;lockMode=false;
-  vibrate([20,20,20,20,60]);
-  triangles.forEach(t=>triEls[t.id].classList.remove('wild-blocked','lock-unavailable'));
+  triangles[id].locked=true; lockMode=false;
   document.getElementById('lock-banner').classList.remove('show');
-  level++;threshold+=1;score=0;
+  // Check if all 24 are now locked — enter unlock phase
+  var allLocked=triangles.every(function(t){return t.locked;});
+  if(allLocked) unlockPhase=true;
+  levelTimelog.push({level:level, seconds:timerSeconds});
+  if(level===FINAL_LEVEL){showCompletion();return;}
+  level++; threshold+=1; score=0;
   document.getElementById('level-val').textContent=level;
   document.getElementById('score-val').textContent=0;
   document.getElementById('next-val').textContent=threshold;
-  foundWords=new Set();foundLengths=new Set();wildChoices={};selected=[];
-  foundList.length=0;showLevelUp(false);
-  assignLetters();updateView();updateDots();
-  vibrate([20,20,20,20,60]);
-  setMsg(`Level ${level}! "${ll}" locked. Reach ${threshold} pts.`,'info');
+  foundWords=new Set(); foundLengths=new Set(); wildChoices={}; selected=[];
+  foundList.length=0; showLevelUp(false);
+  assignLetters(); updateView(); updateDots();
+  setMsg('Level '+level+'! "'+ll+'" locked. Reach '+threshold+' pts.','info');
 }
 
-assignLetters();updateView();updateDots();
+function startUnlock(){
+  lockMode=true; showLevelUp(false);
+  document.getElementById('lock-banner').textContent='Tap a triangle to unlock it.';
+  document.getElementById('lock-banner').classList.add('show');
+  selected.forEach(function(id){if(triangles[id].letter==='?')delete wildChoices[id];});
+  selected=[]; updateView();
+}
+
+function doUnlock(id){
+  var ll=triangles[id].letter;
+  triangles[id].locked=false;
+  if(ll==='?') wildLocked=false;
+  lockMode=false;
+  document.getElementById('lock-banner').textContent='Tap a triangle to lock that letter permanently.';
+  document.getElementById('lock-banner').classList.remove('show');
+  levelTimelog.push({level:level, seconds:timerSeconds});
+  if(level===FINAL_LEVEL){showCompletion();return;}
+  level++; threshold+=1; score=0;
+  document.getElementById('level-val').textContent=level;
+  document.getElementById('score-val').textContent=0;
+  document.getElementById('next-val').textContent=threshold;
+  foundWords=new Set(); foundLengths=new Set(); wildChoices={}; selected=[];
+  foundList.length=0; showLevelUp(false);
+  assignLetters(); updateView(); updateDots();
+  setMsg('Level '+level+'! "'+ll+'" unlocked. Reach '+threshold+' pts.','info');
+}
+
+// --- Timer ---
+var timerInterval=null, timerSeconds=0;
+function formatTime(s){var m=Math.floor(s/60);var ss=s%60;return m+':'+(ss<10?'0':'')+ss;}
+function startTimer(){
+  stopTimer(); timerSeconds=0;
+  document.getElementById('timer-val').textContent='0:00';
+  timerInterval=setInterval(function(){
+    timerSeconds++;
+    document.getElementById('timer-val').textContent=formatTime(timerSeconds);
+  },1000);
+}
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+
+var FINAL_LEVEL=41;
+
+function showCompletion(){
+  stopTimer();
+  var finalTime=timerSeconds;
+  document.getElementById('complete-totaltime').textContent='Total: '+formatTime(finalTime);
+  var ul=document.getElementById('complete-log-list'); ul.innerHTML='';
+  levelTimelog.forEach(function(entry){
+    var li=document.createElement('li');
+    li.innerHTML='<span class="tl-level">Level '+entry.level+'</span><span class="tl-time">'+formatTime(entry.seconds)+'</span>';
+    ul.appendChild(li);
+  });
+  document.getElementById('complete-popup').classList.add('show');
+}
+
+function openTimeLog(){
+  var ul=document.getElementById('timelog-list'); ul.innerHTML='';
+  if(!levelTimelog.length){
+    ul.innerHTML='<li><div class="tl-empty">No levels completed yet.</div></li>';
+  } else {
+    levelTimelog.forEach(function(entry){
+      var li=document.createElement('li');
+      li.innerHTML='<span class="tl-level">Level '+entry.level+'</span><span class="tl-time">'+formatTime(entry.seconds)+'</span>';
+      ul.appendChild(li);
+    });
+  }
+  document.getElementById('timelog-popup').classList.add('show');
+}
+
+function restartGame(){
+  document.getElementById('settings-popup').classList.remove('show');
+  document.getElementById('complete-popup').classList.remove('show');
+  score=0; level=1; threshold=15; selected=[]; wildChoices={};
+  foundWords=new Set(); foundLengths=new Set(); lockMode=false; wildLocked=false;
+  foundList=[]; unlockPhase=false; levelTimelog=[];
+  triangles.forEach(function(t){t.locked=false;});
+  document.getElementById('score-val').textContent=0;
+  document.getElementById('level-val').textContent=1;
+  document.getElementById('next-val').textContent=15;
+  document.getElementById('lock-banner').classList.remove('show');
+  showLevelUp(false);
+  assignLetters(); updateView(); updateDots();
+  setMsg('Restarted! Select letters to begin.','info');
+  startTimer();
+}
+
+assignLetters(); updateView(); updateDots();
+
+// ═══════════════════════════════════════════════════════
+//  HIGHSCORE SYSTEM
+//  Storage keys:
+//    shared "hs:scores"  → [{username, seconds, date}]  (leaderboard)
+//    personal "hs:me"    → {email, username, passHash}   (local credential)
+// ═══════════════════════════════════════════════════════
+
+var HS = (function(){
+  // Simple deterministic hash (djb2) — good enough for a game
+  function hashStr(s){
+    var h=5381;
+    for(var i=0;i<s.length;i++)h=((h<<5)+h)+s.charCodeAt(i)|0;
+    return (h>>>0).toString(36);
+  }
+
+  var me = null;          // {email, username, passHash}
+  var authMode = 'signup'; // 'signup' | 'login'
+  var pendingScore = null; // seconds to submit after auth
+
+  // ── Storage helpers ──────────────────────────────────
+
+  async function loadMe(){
+    try{
+      var r = await window.storage.get('hs:me');
+      me = r ? JSON.parse(r.value) : null;
+    }catch(e){ me = null; }
+    return me;
+  }
+
+  async function saveMe(obj){
+    me = obj;
+    await window.storage.set('hs:me', JSON.stringify(obj));
+  }
+
+  async function loadScores(){
+    try{
+      var r = await window.storage.get('hs:scores', true);
+      return r ? JSON.parse(r.value) : [];
+    }catch(e){ return []; }
+  }
+
+  async function saveScores(arr){
+    await window.storage.set('hs:scores', JSON.stringify(arr), true);
+  }
+
+  // ── Auth helpers ─────────────────────────────────────
+
+  function setErr(msg){ document.getElementById('auth-err').textContent = msg||''; }
+  function setSubmitBusy(busy){
+    var btn = document.getElementById('auth-submit');
+    btn.disabled = busy;
+    btn.textContent = busy ? 'Please wait…' : (authMode==='signup'?'Sign Up':'Log In');
+  }
+
+  function toggleAuthMode(){
+    authMode = authMode==='signup' ? 'login' : 'signup';
+    document.getElementById('auth-title').textContent = authMode==='signup' ? 'Create Account' : 'Log In';
+    document.getElementById('auth-submit').textContent = authMode==='signup' ? 'Sign Up' : 'Log In';
+    document.getElementById('auth-toggle').textContent = authMode==='signup'
+      ? 'Already have an account? Log in'
+      : 'No account yet? Sign up';
+    document.getElementById('auth-email-field').style.display = authMode==='signup' ? '' : 'none';
+    setErr('');
+  }
+  window.toggleAuthMode = toggleAuthMode;
+
+  async function doAuth(){
+    var email    = document.getElementById('auth-email').value.trim().toLowerCase();
+    var username = document.getElementById('auth-username').value.trim();
+    var password = document.getElementById('auth-password').value;
+    setErr('');
+
+    if(authMode==='signup'){
+      if(!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)){ setErr('Please enter a valid email.'); return; }
+    }
+    if(!username || username.length < 2){ setErr('Username must be at least 2 characters.'); return; }
+    if(!password || password.length < 6){ setErr('Password must be at least 6 characters.'); return; }
+
+    setSubmitBusy(true);
+    var passHash = hashStr(password+'shimmy');
+
+    var scores = await loadScores();
+
+    if(authMode==='signup'){
+      // Check username not taken
+      var taken = scores.some(function(s){ return s.username.toLowerCase()===username.toLowerCase(); });
+      if(taken){ setErr('Username already taken. Try another.'); setSubmitBusy(false); return; }
+      await saveMe({email:email, username:username, passHash:passHash});
+    } else {
+      // Login: check credentials match stored personal record
+      var stored = me; // might already be loaded
+      // Try re-loading from storage in case it's a different session
+      await loadMe();
+      if(!me || me.username.toLowerCase()!==username.toLowerCase() || me.passHash!==passHash){
+        setErr('Incorrect username or password.'); setSubmitBusy(false); return;
+      }
+    }
+
+    setSubmitBusy(false);
+    closeAuth();
+    updateUserUI();
+
+    // If we have a pending score to submit, do it now
+    if(pendingScore !== null){
+      await submitScore(pendingScore);
+      pendingScore = null;
+    }
+  }
+  window.doAuth = doAuth;
+
+  function closeAuth(){
+    document.getElementById('auth-popup').classList.remove('show');
+    document.getElementById('auth-err').textContent='';
+    pendingScore = null;
+  }
+  window.closeAuth = closeAuth;
+
+  function openAuth(){
+    document.getElementById('auth-popup').classList.add('show');
+    // reset to signup mode
+    authMode='signup';
+    document.getElementById('auth-title').textContent='Create Account';
+    document.getElementById('auth-submit').textContent='Sign Up';
+    document.getElementById('auth-toggle').textContent='Already have an account? Log in';
+    document.getElementById('auth-email-field').style.display='';
+    document.getElementById('auth-email').value='';
+    document.getElementById('auth-username').value='';
+    document.getElementById('auth-password').value='';
+    setErr('');
+  }
+
+  function doLogout(){
+    me = null;
+    window.storage.delete('hs:me');
+    document.getElementById('hs-user-row').style.display='none';
+    document.getElementById('hs-user-name').textContent='';
+    updateUserUI();
+  }
+  window.doLogout = doLogout;
+
+  function updateUserUI(){
+    var row = document.getElementById('hs-user-row');
+    if(me){
+      row.style.display='flex';
+      document.getElementById('hs-user-name').textContent='👤 '+me.username;
+    } else {
+      row.style.display='none';
+    }
+  }
+
+  // ── Score submission ─────────────────────────────────
+
+  async function submitScore(seconds){
+    if(!me) return;
+    var scores = await loadScores();
+    // Only keep the player's best score
+    var existing = scores.findIndex(function(s){ return s.username.toLowerCase()===me.username.toLowerCase(); });
+    var entry = {username: me.username, seconds: seconds, date: new Date().toISOString().slice(0,10)};
+    if(existing>=0){
+      if(scores[existing].seconds > seconds){
+        scores[existing] = entry; // new personal best
+      }
+      // else keep existing (it's faster)
+    } else {
+      scores.push(entry);
+    }
+    // Sort ascending (fastest first)
+    scores.sort(function(a,b){ return a.seconds - b.seconds; });
+    await saveScores(scores);
+
+    // Update complete-popup button
+    var btn = document.getElementById('complete-hs-btn');
+    btn.textContent='✓ Score Submitted!';
+    btn.classList.add('submitted');
+    btn.disabled=true;
+    document.getElementById('complete-hs-msg').textContent='Your time is on the leaderboard!';
+  }
+
+  // ── Public: open highscores ──────────────────────────
+
+  async function openHighscores(){
+    await loadMe();
+    updateUserUI();
+    document.getElementById('hs-popup').classList.add('show');
+    document.getElementById('hs-loading').style.display='block';
+    document.getElementById('hs-table').style.display='none';
+    document.getElementById('hs-empty').style.display='none';
+
+    var scores = await loadScores();
+    document.getElementById('hs-loading').style.display='none';
+
+    if(!scores.length){
+      document.getElementById('hs-empty').style.display='block';
+      return;
+    }
+
+    document.getElementById('hs-table').style.display='table';
+    var tbody = document.getElementById('hs-tbody');
+    tbody.innerHTML='';
+    var medals=['🥇','🥈','🥉'];
+    scores.slice(0,20).forEach(function(s,i){
+      var tr = document.createElement('tr');
+      var isMe = me && me.username.toLowerCase()===s.username.toLowerCase();
+      if(isMe) tr.className='hs-me';
+      var rank = i<3 ? '<span class="hs-medal">'+medals[i]+'</span>' : (i+1);
+      tr.innerHTML = '<td>'+rank+'</td>'
+        +'<td class="hs-name">'+(isMe?'▶ ':'')+escHtml(s.username)+'</td>'
+        +'<td class="hs-time">'+formatTime(s.seconds)+'</td>';
+      tbody.appendChild(tr);
+    });
+  }
+  window.openHighscores = openHighscores;
+
+  // ── Public: called from completion screen ────────────
+
+  async function onSubmitScore(){
+    var btn = document.getElementById('complete-hs-btn');
+    if(btn.classList.contains('submitted')) return;
+
+    await loadMe();
+    var seconds = timerSeconds; // current run total (stopTimer already called)
+
+    if(!me){
+      pendingScore = seconds;
+      document.getElementById('complete-popup').classList.remove('show');
+      openAuth();
+    } else {
+      await submitScore(seconds);
+    }
+  }
+  window.onSubmitScore = onSubmitScore;
+
+  // ── Helpers ──────────────────────────────────────────
+
+  function escHtml(s){
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Reset submit button when game restarts
+  var origRestart = window.restartGame;
+  // (patched below after initial declaration)
+
+  // Init on load
+  loadMe().then(function(){ updateUserUI(); });
+
+  return { openHighscores:openHighscores, onSubmitScore:onSubmitScore };
+})();
+
+// Patch restartGame to reset submit button
+var _origRestart = restartGame;
+restartGame = function(){
+  _origRestart();
+  var btn = document.getElementById('complete-hs-btn');
+  btn.textContent='🏆 Submit Score';
+  btn.classList.remove('submitted');
+  btn.disabled=false;
+  document.getElementById('complete-hs-msg').textContent='Submit your score to the leaderboard!';
+};
 </script>
-<div id="howto-popup" onclick="closeHowTo()">
-  <div id="howto-inner" onclick="event.stopPropagation()">
-    <h2>How to Play</h2>
-
-    <h3>The Grid</h3>
-    <p>The game board is a parallelogram filled with <strong>24 equilateral triangles</strong>, each containing a letter. The <span class="howto-chip chip-pink">?</span> is a wildcard — you choose its letter when you select it.</p>
-
-    <h3>Building a Word</h3>
-    <ul>
-      <li>Tap any triangle to start your word.</li>
-      <li>Each next letter must be in a triangle that <strong>shares a point</strong> (vertex) with the last letter selected — not just an edge.</li>
-      <li>You cannot use the same triangle twice in one word.</li>
-      <li>Words can be 1 to 10 letters long.</li>
-      <li>Tap a triangle already in your word to <strong>backtrack</strong> to that point.</li>
-    </ul>
-
-    <h3>Submitting a Word</h3>
-    <p>Tap <span class="howto-chip chip-green">ENTER WORD</span> to submit. Words are checked against a dictionary. If valid, you score <strong>1 point per letter</strong>.</p>
-    <p>Tap <span class="howto-chip chip-pink">✕</span> to clear your current selection.</p>
-
-    <h3>Word Length Dots</h3>
-    <p>The blue triangle (top-left) shows dots numbered 1–10. Each dot represents a word length. <strong>You can only score one word of each length per level</strong> — once a length is used, that dot turns green and that length is locked out.</p>
-
-    <h3>The Wildcard ?</h3>
-    <p>When you tap the <span class="howto-chip chip-pink">?</span> triangle, a letter picker appears. Choose any letter — it acts as that letter for the current word. Your choice resets when you clear or submit.</p>
-
-    <h3>Scoring &amp; Levelling Up</h3>
-    <ul>
-      <li>Score <strong>1 point per letter</strong> in each valid word.</li>
-      <li>Reach the <span class="howto-chip chip-amber">NEXT LEVEL</span> target to unlock <span class="howto-chip chip-blue">LEVEL UP!</span>.</li>
-      <li>Tap <span class="howto-chip chip-blue">LEVEL UP!</span> then tap <strong>one triangle to lock</strong> its letter permanently — it stays through all future reshuffles (shown in amber).</li>
-      <li>After levelling up, your score resets to 0 and all word lengths become available again with a fresh set of letters.</li>
-      <li>The target score increases by 1 each level.</li>
-    </ul>
-
-    <h3>Reachable Highlights</h3>
-    <p>After selecting a letter, triangles you can move to next are subtly highlighted so you can plan your path.</p>
-
-    <button id="howto-close" onclick="closeHowTo()">Got it!</button>
-  </div>
-</div>
-
-<div id="settings-popup" onclick="closeSettings()">
-  <div id="settings-inner" onclick="event.stopPropagation()">
-    <h2>Settings</h2>
-    <div class="settings-row">
-      <div>
-        <div class="settings-label">Vibrate</div>
-        <div class="settings-sublabel">Haptic feedback on actions</div>
-      </div>
-      <label class="toggle-wrap">
-        <input type="checkbox" id="toggle-vibrate" checked onchange="saveSettings()">
-        <span class="toggle-slider"></span>
-      </label>
-    </div>
-    <button id="settings-close" onclick="closeSettings()">Done</button>
-  </div>
-</div>
-
-<script>
-function openHowTo(){document.getElementById('howto-popup').classList.add('show');}
-function closeHowTo(){document.getElementById('howto-popup').classList.remove('show');}
-function openSettings(){document.getElementById('settings-popup').classList.add('show');}
-function closeSettings(){document.getElementById('settings-popup').classList.remove('show');}
-function dismissSplash(){
-  document.getElementById('splash').classList.add('gone');
-}
-function saveSettings(){
-  const v=document.getElementById('toggle-vibrate').checked;
-  try{localStorage.setItem('shimmy-vibrate',v?'1':'0');}catch(e){}
-}
-function loadSettings(){
-  try{
-    const v=localStorage.getItem('shimmy-vibrate');
-    if(v==='0') document.getElementById('toggle-vibrate').checked=false;
-  }catch(e){}
-}
-function vibrate(pattern){
-  if(!document.getElementById('toggle-vibrate').checked) return;
-  if(navigator.vibrate) navigator.vibrate(pattern);
-}
-loadSettings();
-</script>
-
 </body>
 </html>
